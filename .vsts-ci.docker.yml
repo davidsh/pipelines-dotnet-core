@@ -3,11 +3,10 @@ pool:
   vmImage: 'ubuntu-16.04'
 variables:
   buildConfiguration: 'Release'
-  dockerId: mydockerid
 steps:
 - script: |
-    docker build -f Dockerfile.build -t $(dockerId)/dotnetcore-build:$BUILD_BUILDID .
-    docker run --name dotnetcoreapp --rm -d $(dockerId)/dotnetcore-build:$BUILD_BUILDID
+    docker build -f Dockerfile.build -t dotnetcore-build:$BUILD_BUILDID .
+    docker run --name dotnetcoreapp --rm -d dotnetcore-build:$BUILD_BUILDID
     docker cp dotnetcoreapp:app/dotnetcore-tests/TestResults $(System.DefaultWorkingDirectory)
     docker cp dotnetcoreapp:app/dotnetcore-sample/out $(System.DefaultWorkingDirectory)
     docker stop dotnetcoreapp
@@ -19,4 +18,4 @@ steps:
     failTaskOnFailedTests: true
 
 - script: |
-    docker build -f Dockerfile -t $(dockerId)/dotnetcore-sample:$BUILD_BUILDID .
+    docker build -f Dockerfile -t dotnetcore-sample:$BUILD_BUILDID .
