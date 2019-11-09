@@ -19,12 +19,12 @@ namespace dotnetcore_tests
             _output.WriteLine("PassingTest");
         }
 
-        /*[Fact]
+        [Fact]
         public void FailingTest()
         {
             _output.WriteLine("FailingTest");
             int i = 5;
             Assert.Equal(4, i);
-        }*/
+        }
     }
 }

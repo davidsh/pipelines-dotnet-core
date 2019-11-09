@@ -5,9 +5,6 @@ WORKDIR /app
 COPY . ./
 # dotnet commands to build, test, and publish
 
-WORKDIR /app/tests
-RUN dotnet test dotnetcore-tests/dotnetcore-tests.csproj -c Release --logger "trx;LogFileName=testresults.trx"
-
-WORKDIR /app/src
-RUN dotnet publish -c Release -o out
-ENTRYPOINT dotnet out/pipelines-dotnet-core.dll
+#ENTRYPOINT ["dotnet", "test", "dotnetcore-tests/dotnetcore-tests.csproj" "--logger:trx", "--results-directory", "/testresults"]
+ENTRYPOINT ["/bin/bash", "/app/run.sh"]
+#ENTRYPOINT ["/bin/bash"]
