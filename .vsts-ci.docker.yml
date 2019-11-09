@@ -1,0 +1,21 @@
+# Build Docker image for this app, to be published to Docker Registry
+pool:
+  vmImage: 'ubuntu-16.04'
+variables:
+  buildConfiguration: 'Release'
+steps:
+- script: |
+    docker build -f Dockerfile.build -t $(dockerId)/dotnetcore-build:$BUILD_BUILDID .
+    docker run --name dotnetcoreapp --rm -d $(dockerId)/dotnetcore-build:$BUILD_BUILDID
+    docker cp dotnetcoreapp:app/dotnetcore-tests/TestResults $(System.DefaultWorkingDirectory)
+    docker cp dotnetcoreapp:app/dotnetcore-sample/out $(System.DefaultWorkingDirectory)
+    docker stop dotnetcoreapp
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+    failTaskOnFailedTests: true
+
+- script: |
+    docker build -f Dockerfile -t $(dockerId)/dotnetcore-sample:$BUILD_BUILDID .
