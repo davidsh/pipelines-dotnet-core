@@ -6,9 +6,7 @@ variables:
 steps:
 - script: |
     docker build -f Dockerfile.build -t dotnetcore-build:$BUILD_BUILDID .
-    docker run --name dotnetcoreapp --rm -d dotnetcore-build:$BUILD_BUILDID
-    docker cp dotnetcoreapp:/testresults $(System.DefaultWorkingDirectory)
-    docker stop dotnetcoreapp
+    docker run -v $(System.DefaultWorkingDirectory):/testresults --name dotnetcoreapp --rm dotnetcore-build:$BUILD_BUILDID
 
 - task: PublishTestResults@2
   inputs:
