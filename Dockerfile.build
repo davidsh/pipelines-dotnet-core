@@ -1,5 +1,5 @@
 # Build and run tests inside the docker container
-FROM microsoft/dotnet:2.1-sdk
+FROM microsoft/dotnet:2.2-sdk
 WORKDIR /app
 # copy the contents of agent working directory on host to workdir in container
 COPY . ./
