@@ -4,8 +4,10 @@ WORKDIR /app
 # copy the contents of agent working directory on host to workdir in container
 COPY . ./
 # dotnet commands to build, test, and publish
-RUN dotnet restore
-RUN dotnet build -c Release
+
+WORKDIR /app/tests
 RUN dotnet test dotnetcore-tests/dotnetcore-tests.csproj -c Release --logger "trx;LogFileName=testresults.trx"
+
+WORKDIR /app/src
 RUN dotnet publish -c Release -o out
-ENTRYPOINT dotnet dotnetcore-sample/out/dotnetcore-sample.dll
+ENTRYPOINT dotnet out/pipelines-dotnet-core.dll
